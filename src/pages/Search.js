@@ -10,6 +10,7 @@ function Search() {
 
 
     const [data, setData] = useState()
+    const [response, setResponse] = useState()
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
@@ -22,7 +23,13 @@ function Search() {
 
                 .then(resp => resp.json())
                 // .then(json => console.log(json))
-                .then(json => setData(json))
+                .then(json => { if(json.Response==="True"){
+                    setData(json)
+                    setResponse(true)
+                }}
+                    
+                    
+                    )
                 .catch(err => (console.log(err)));
         // }
         // catch (error) {
@@ -37,9 +44,7 @@ function Search() {
     return (
 
         <div>
-        
-     
-            <Grid celled>
+        {response?   <Grid celled>
                 <Grid.Row>
                     <Grid.Column computer={3} mobile={8}>
                         {data?.Poster === "N/A" ? <Image src='https://react.semantic-ui.com/images/wireframe/image.png' /> : <Image src={data?.Poster} />}
@@ -59,7 +64,7 @@ function Search() {
 
 
                                 <Label.Group tag >
-                                    {data?.Genre.split(',')?.map((item => <Label as='a' inverted>{item}</Label>))}
+                                    {data?.Genre.split(',')?.map((item => <Label as='a'  color='blue' >{item}</Label>))}
                                    
 
                                 </Label.Group>
@@ -90,7 +95,9 @@ function Search() {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </div>
+        : <h1>Sorry data not found</h1> }
+     
+          </div>
 
     )
 }
