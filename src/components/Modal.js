@@ -1,10 +1,61 @@
 import React, { useEffect, useState } from 'react'
+import  {db} from '../firebase/firebase'
 
-import { Button, Grid, Image, Icon, Modal, Card, Label,Segment, Header,Form,TextArea } from 'semantic-ui-react';
+import { Button, Grid, Image, Icon, Modal, Card, Label,Segment, Header,Form,TextArea,Checkbox } from 'semantic-ui-react';
+import Rating from '@material-ui/lab/Rating';
+import { useAuth } from "../context/AuthContext"
+
 
 function ModalComponent({data}) {
-   
+
+     const { currentUser } = useAuth()
     const [open, setOpen] = useState(false)
+
+    const [value, setValue] = React.useState(0);
+    const [hover, setHover] = React.useState(-1);
+
+    const [isSpoiler,setIsSpoiler] = useState(false);
+    const [review, setReview] = React.useState('');
+
+    async function handleSubmit (){
+      const userRef = await db.collection('users').doc(currentUser.displayName).collection('reviews');
+      console.log(data.imdbID)
+      userRef.doc(data.imdbID).set({
+        
+        Plot: data.Plot|| '',
+        Title:data.Title|| '',
+        Rating:data?.imdbRating|| '',
+        Runtime: data?.Runtime || '',
+        Type: data?.Type || '',
+        Writer: data?.Writer || '',
+        Poster:data?.Poster || '',
+        Year: data?.Year || '',
+        imdbID: data?.imdbRating || '',
+        imdbRating: data?.imdbRating || '',
+        imdbVotes: data?.imdbVotes || '',
+        'no-value': data?.none || '',  
+        genreArray:data?.genreArray || '',
+        isSpoiler: isSpoiler || false, 
+        review:review || '',
+
+         
+      });
+      setOpen(false)
+
+    }
+
+    const labels = {
+      0.5: 'Useless',
+      1: 'Bad',
+      1.5: 'Poor',
+      2: 'Below Average',
+      2.5: 'Average',
+      3: 'Ok',
+      3.5: '',
+      4: 'Good+',
+      4.5: 'Excellent',
+      5: 'Fantastic',
+    };
     return (
         <div>
                 <Modal
@@ -15,21 +66,40 @@ function ModalComponent({data}) {
             <Icon name="write square"  /> Write a review
              </Button>}
             >
-      <Modal.Header>Select a Photo</Modal.Header>
+      <Modal.Header>{data?.Title}</Modal.Header>
       <Modal.Content image>
-        <Image size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped />
+        <Image size='medium' src={data?.Poster} wrapped />
         <Modal.Description>
         <Form fluid>
-          <Header>Write a Review</Header>
+          <Header>Write a Review </Header>
          
+           <h3> Describe your opinion of the movie and provide a rating  </h3>
          
           <Form.Field   control='textarea' rows='3' 
-         
+          value={review}
+          onChange={(event) => {
+           setReview(event.target.value);
+          
+          }}
           label='Review'
-          placeholder='Tell us more the movie, describe it how vividly you can .'
+          placeholder='Tell us.. .'
         />
-        
-        <Form.Field control={Button}>Submit</Form.Field>
+         <Rating
+        name="hover-feedback"
+        value={value}
+        precision={0.5}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+        onChangeActive={(event, newHover) => {
+          setHover(newHover);
+        }}
+      />{value !== null && <span mb={2}>{labels[hover !== -1 ? hover : value]}</span>}
+         <Form.Field>
+      <Checkbox label='My review contains spoilers'  onChange={(event, newValue) => {
+        setIsSpoiler(newValue.checked);
+        }} />
+    </Form.Field>
       </Form>
         </Modal.Description>
       </Modal.Content>
@@ -38,10 +108,11 @@ function ModalComponent({data}) {
           Nope
         </Button>
         <Button
-          content="Yep, that's me"
+          content="Yep, Publish it"
           labelPosition='right'
           icon='checkmark'
-          onClick={() => setOpen(false)}
+          disabled={!(value && review)}
+          onClick={() => handleSubmit()}
           positive
         />
       </Modal.Actions>
