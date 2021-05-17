@@ -29,14 +29,26 @@ function Dashboard() {
     }, [])
   
     async function getTodos() {
-        const notesRef =db.collection("users").doc(currentUser.uid);
+        const notesRef = db.collection("users").doc(currentUser.displayName);
         // console.log(await notesRef.get())
-        notesRef.collection("todos").onSnapshot(function (querySnapshot){
+        notesRef.collection("reviews").onSnapshot(function (querySnapshot){
         setTodos(
           querySnapshot.docs.map((doc) => ({
-          id: doc.id, 
-          todo: doc.data().todo,
-          inProgress: doc.data().inProgress
+            id:doc.id,
+            Plot: doc.data().Plot|| 'default',
+            Title:doc.data().Title|| '',
+            Rating:doc.data()?.imdbRating|| '',
+            Runtime: doc.data()?.Runtime || '',
+            Type: doc.data()?.Type || '',
+            Writer: doc.data()?.Writer || '',
+            Poster:doc.data()?.Poster || '',
+            Year: doc.data()?.Year || '',
+            imdbID: doc.data()?.imdbRating || '',
+            imdbRating: doc.data()?.imdbRating || '',
+            imdbVotes: doc.data()?.imdbVotes || '',           
+            genreArray:doc.data()?.genreArray || '',
+            isSpoiler: doc.data()?.isSpoiler,
+            review:doc.data().review || '',
         }))
         )
       })
@@ -110,6 +122,7 @@ function Dashboard() {
     </Grid.Column>
     <Grid.Column width={3}>
       {/* <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' /> */}
+      {console.log(todos)}
       <Icon name='star' size='large' />
     </Grid.Column>
   </Grid>
