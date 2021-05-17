@@ -16,10 +16,30 @@ function Signup() {
 
         e.preventDefault();
         try {
-            setIsLoading(true)
-            await signup(email, password, displayName)
+            if(!(displayName &&  password && email)){
+                alert('Please fill the required details');
+            }
+            
+            else{
+                setIsLoading(true)
+                const snapShot = await db.collection('users')
+                .doc(displayName.trim()) // varuId in your case
+                .get();
+                if(snapShot.exists){
+                    alert("username is already taken");
+                    setIsLoading(false);
+                }
+                else{
+                    await signup(email, password, displayName)
+                    setIsLoading(false)
+                    history.push("/")
+                }
+                
+            }
+            
+          
            
-            history.push("/")
+         
         }
         catch (err) {
             console.log(err);
