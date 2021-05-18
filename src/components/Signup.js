@@ -21,19 +21,26 @@ function Signup() {
             }
             
             else{
-                setIsLoading(true)
-                const snapShot = await db.collection('users')
-                .doc(displayName.trim()) // varuId in your case
-                .get();
-                if(snapShot.exists){
-                    alert("username is already taken");
-                    setIsLoading(false);
-                }
-                else{
-                    await signup(email, password, displayName)
+                if(displayName){
+                    setIsLoading(true)
+                
+                    const snapShot = await db.collection('users')
+                    .doc(displayName) 
+                    .get();
+                    if(snapShot.exists){
+                        alert("username is already taken");
+                       
+                       
+                    }
+                    else{
+                       
+                        await signup(email, password, displayName)
+                        
+                        history.push("/")
+                    }
                     setIsLoading(false)
-                    history.push("/")
                 }
+                
                 
             }
             
@@ -41,8 +48,8 @@ function Signup() {
            
          
         }
-        catch (err) {
-            console.log(err);
+        catch  {
+            // console.log(err);
             // alert("Error occured")
             setIsLoading(false)
         }
