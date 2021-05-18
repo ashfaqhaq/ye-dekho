@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react"
+import { useHistory } from 'react-router'
 
 import { auth } from "../firebase/firebase"
 import { db } from "../firebase/firebase"
@@ -12,35 +13,39 @@ export function useAuth() {
 export function AuthProvider({ children }) {
 
 
+   
 
     const [currentUser, setCurrentUser] = useState()
     const [isLoading, setIsLoading] = useState(true)
+    const history = useHistory()
 
-    async function signup(email, password, displayName) {
-        return auth.createUserWithEmailAndPassword(email, password).then(userAuth => {
+    function signup(email, password, displayName) {
 
+       
+        return    auth.createUserWithEmailAndPassword(email, password).then(userAuth => {
+           
             userAuth.user.updateProfile({
-                displayName: displayName
+                displayName:displayName
 
             }).then(async () => {
-
-                var userDocRef = db.collection("users").doc(userAuth.user.displayName);
+                var userDocRef =  db.collection("users").doc(userAuth.user.displayName);
                 userDocRef.set({
-                    'info': {
-                        email: userAuth.user.email,
-                        uid: userAuth.user.uid,
-                        displayName
-
-                    }
+                  'info': {
+                    email: userAuth.user.email,
+                    uid: userAuth.user.uid,
+                    displayName
+                  }
                 });
-
-            })
+              
+              })
+          
+             
 
 
 
 
         });
-            
+
     }
 
     function login(email, password) {
@@ -57,6 +62,7 @@ export function AuthProvider({ children }) {
         const subscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user);
             setIsLoading(false);
+         
 
         })
         return subscribe;
