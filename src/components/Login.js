@@ -16,7 +16,7 @@ function Login() {
    
  async function handleLoginPublic(e){
      e.preventDefault();
-    await login("aoduw@gmail.com","aoduw@gmail.com")
+    await login("test123@gmail.com","test123")
     history.push("/");
  }
 
