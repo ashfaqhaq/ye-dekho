@@ -23,7 +23,7 @@ function Search() {
   // const type = parsed.type || '';
 
   useEffect(() => {
-    fetch(`http://www.omdbapi.com/?t=${search}&apikey=1a35b852`)
+    fetch(`https://www.omdbapi.com/?t=${search}&apikey=1a35b852`)
       .then((resp) => resp.json())
       .then((json) => {
         if (json.Response === "True") {
