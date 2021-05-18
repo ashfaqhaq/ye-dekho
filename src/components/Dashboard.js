@@ -1,8 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React,{useState,useEffect} from 'react'
-import { Button, Form, Input, Grid, Image, Icon } from 'semantic-ui-react';
+// import { Button,  Input, Grid, Image, Icon } from 'semantic-ui-react';
 import {db} from "../firebase/firebase"
 import { useAuth } from "../context/AuthContext"
+import { Card } from 'semantic-ui-react'
+import Rating from '@material-ui/lab/Rating';
+import {Input} from 'semantic-ui-react';
+import { Button, Form, Grid, Image, Icon, Label,Segment, Header,  } from 'semantic-ui-react';
+
 
 import { useHistory } from 'react-router';
 
@@ -13,24 +18,34 @@ function Dashboard() {
     const { currentUser } = useAuth()
   
     const history = useHistory();
-    function toggleInProgress(item) {
-      notesRef.collection("todos").doc(item.id).update({
-          inProgress: !item.inProgress
-      })
-  }
+  //   function toggleInProgress(item) {
+  //     notesRef.collection("todos").doc(item.id).update({
+  //         inProgress: !item.inProgress
+  //     })
+  // }
 
 
     const [todos, setTodos] = useState([])
     const [searchInput, setSearchInput] = useState("")
     const [type, setType] = useState("")
-    const notesRef= db.collection("users").doc(currentUser.uid);
+  //  if(currentUser.displayName){
+  //   console.log(currentUser);
+  //   console.log(currentUser.displayName);
+
+  //   var notesRef = db.collection("users").doc(currentUser?.displayName);
+  //   }   
     useEffect(() => {
+      console.log({currentUser})
       getTodos();
-    }, [])
+    }, [currentUser])
   
     async function getTodos() {
-        const notesRef = db.collection("users").doc(currentUser.displayName);
-        // console.log(await notesRef.get())
+
+      try{
+        console.log(currentUser," line 40")
+        const notesRef = await db.collection("users").doc(currentUser.displayName);
+        const noteData = await notesRef.get();
+        console.log(noteData)
         notesRef.collection("reviews").onSnapshot(function (querySnapshot){
         setTodos(
           querySnapshot.docs.map((doc) => ({
@@ -52,7 +67,10 @@ function Dashboard() {
         }))
         )
       })
-      
+      }
+      catch(error){
+        console.log(error)
+      }
     }
   function onChange(e){
     setSearchInput(e.target.value)
@@ -60,19 +78,19 @@ function Dashboard() {
 
 
 //   function deleteTodo(id){  
-//     notesRef.collection("todos").doc(id).delete();
+//     notesRef.collection("reviews").doc(id).delete();
 // }
-   async function onSubmit(e) {
-      e.preventDefault();
+  //  async function onSubmit(e) {
+  //     e.preventDefault();
  
      
-    await  notesRef.collection("todos").add({
-        inProgress: true,
-        todo: searchInput,
-      });
+  //   await  notesRef.collection("todos").add({
+  //       inProgress: true,
+  //       todo: searchInput,
+  //     });
     
     
-    }
+  //   }
     async function searchMovie(e) {
       e.preventDefault();
  
@@ -126,6 +144,60 @@ function Dashboard() {
       <Icon name='star' size='large' />
     </Grid.Column>
   </Grid>
+  <br/>
+  <Card.Group> 
+  <Grid celled>
+    {todos.map((data)=>{return(<Grid.Row>
+                    <Grid.Column computer={3} mobile={8}>
+                        {data?.Poster === "N/A" ? <Image src='https://react.semantic-ui.com/images/wireframe/image.png' /> : <Image src={data?.Poster} />}
+
+                    </Grid.Column>
+                    <Grid.Column computer={13} mobile={16} style={{boxShadow:'none'}}>
+                    <Segment raised floated="right">
+                          <Label as='a' color='red' ribbon='right'>
+                      {data?.Type.toUpperCase()}
+                         </Label>
+                        <Card fluid style={{boxShadow:'none'}}>
+                            <Card.Content>
+
+                                <Card.Header>{data?.Title}</Card.Header>
+                                <Card.Meta>{data?.Year}</Card.Meta>
+                               
+
+
+                                <Label.Group tag >
+                                    {/* {data?.genreArray?.map((item => <Label as='a'  color='blue' >{item}</Label>))} */}
+                                   
+
+                                </Label.Group>
+                                {/* <Label.Group >
+                                {data?.Actors.split(',')?.map((item => <Label as='a' image> <img src={`avatars.dicebear.com/v2/avataaars/${item}.svg?options%5bmood%5d%5b%5d=sad`} />{item}</Label>))}
+                                </Label.Group> */}
+                                <Card.Description>
+                                <br />
+                                    Plot :  {data?.Plot}       <br />
+                                </Card.Description>
+
+                            </Card.Content>
+                            <Card.Content extra>
+                                Rating:   <Rating name="half-rating-read" defaultValue={0} size="large" value={(0+data?.imdbRating)/2}  precision={0.5} readOnly />
+                            <br />
+         Number of votes:   {data?.imdbVotes}
+
+
+                                {/* {data  && <Modal  data = {data}/>} */}
+                               
+                                    
+                                    
+                               
+                            </Card.Content>
+                        </Card>
+                        </Segment>
+                        {/* <Image src='https://react.semantic-ui.com/images/wireframe/centered-paragraph.png' /> */}
+                    </Grid.Column>
+                </Grid.Row>
+            )})}</Grid>
+  </Card.Group>
 
         
         </>
