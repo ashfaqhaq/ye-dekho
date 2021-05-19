@@ -9,6 +9,7 @@ import  PrivateRoute from './components/PrivateRoute'
 import { Route, Switch } from 'react-router';
 import { Container } from 'semantic-ui-react';
 import Search from './pages/Search';
+import Share from './components/Share';
 
 
 const App = () => {
@@ -31,6 +32,8 @@ const App = () => {
      
       <Route  path="/login" component={Login} />
       <Route  path="/resetPassword" component={ResetPassword} />
+      <Route  path="/share" component={Share} />
+      
       <PrivateRoute  path="/search" component={Search} />
      
       </Switch>
