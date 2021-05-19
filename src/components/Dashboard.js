@@ -9,7 +9,7 @@ import {
   Grid,
   Image,
   Label,
-  Segment,
+
   Dimmer,
   Confirm,
   Button,
@@ -30,6 +30,7 @@ function Dashboard() {
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
 
+  // eslint-disable-next-line no-unused-vars
   const handleShow = () => setIsSpoiler(true);
   const handleHide = () => setIsSpoiler(false);
 
