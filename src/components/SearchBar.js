@@ -27,19 +27,25 @@ function Search() {
   return (
     <Form onSubmit={searchMovie}>
       <Grid columns="equal">
-        <Grid.Row columns={2}>
+        <Grid.Row style={{ marginTop: "1rem" }}>
+          <Grid.Column columns={10} >
+           
           <Input
+          centered
+            fluid
             icon="search"
             placeholder="Search..."
             onChange={onChange}
             value={searchInput}
-            style={{ marginTop: "1rem" }}
+            
             // error={error ? true : false}
           />
-
+        </Grid.Column>
+        <Grid.Column columns={10}>
           <Button type="submit" color="teal">
             Submit
           </Button>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     </Form>
