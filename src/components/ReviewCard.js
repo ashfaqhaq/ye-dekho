@@ -56,12 +56,14 @@ function ReviewCard(props) {
       render: () => (
         <Tab.Pane style={{ boxShadow: "none" }} as="h3">
           {" "}
-          <Dimmer.Dimmable as="h3" blurring dimmed={data.isSpoiler}>
+          <h3>
+          <Dimmer.Dimmable  blurring dimmed={data.isSpoiler}>
             <Dimmer active={data.isSpoiler} onClickOutside={handleHide} />
-            <Card.Description style={{ boxShadow: "none" }}>
+            <Card.Description style={{ boxShadow: "none", wordBreak: 'break-all'}}>
               {data?.review}{" "}
             </Card.Description>
           </Dimmer.Dimmable>
+          </h3>
         </Tab.Pane>
       ),
     },
@@ -70,10 +72,12 @@ function ReviewCard(props) {
       render: () => (
         <Tab.Pane style={{ boxShadow: "none" }} as="h3">
           {" "}
+          <h3>
           <Card.Description style={{ boxShadow: "none" }}>
             {" "}
             {data?.Plot}{" "}
           </Card.Description>
+          </h3>
         </Tab.Pane>
       ),
     },
