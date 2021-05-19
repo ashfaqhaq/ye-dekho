@@ -3,19 +3,17 @@ import React, { useState, useEffect } from "react";
 import { Card, Icon, Header } from "semantic-ui-react";
 import Rating from "@material-ui/lab/Rating";
 import {
-    Grid,
-    Image,
-    Label,
-    Dimmer,
-    Confirm,
-    Button,
-    Tab,
-  } from "semantic-ui-react";
+  Grid,
+  Image,
+  Label,
+  Dimmer,
+  Confirm,
+  Button,
+  Tab,
+} from "semantic-ui-react";
 
 import { db } from "../firebase/firebase";
 import { useAuth } from "../context/AuthContext";
-
-
 
 function ReviewCard(props) {
   const [data, setData] = useState(props.data);
@@ -31,6 +29,7 @@ function ReviewCard(props) {
   const open = async (id) => {
     setID(id);
     setIsOpen(true);
+    console.log(id);
   };
   const close = () => setIsOpen(false);
 
@@ -57,12 +56,14 @@ function ReviewCard(props) {
         <Tab.Pane style={{ boxShadow: "none" }} as="h3">
           {" "}
           <h3>
-          <Dimmer.Dimmable  blurring dimmed={data.isSpoiler}>
-            <Dimmer active={data.isSpoiler} onClickOutside={handleHide} />
-            <Card.Description style={{ boxShadow: "none", wordBreak: 'break-all'}}>
-              {data?.review}{" "}
-            </Card.Description>
-          </Dimmer.Dimmable>
+            <Dimmer.Dimmable blurring dimmed={data.isSpoiler}>
+              <Dimmer active={data.isSpoiler} onClickOutside={handleHide} />
+              <Card.Description
+                style={{ boxShadow: "none", wordBreak: "break-all" }}
+              >
+                {data?.review}{" "}
+              </Card.Description>
+            </Dimmer.Dimmable>
           </h3>
         </Tab.Pane>
       ),
@@ -73,10 +74,10 @@ function ReviewCard(props) {
         <Tab.Pane style={{ boxShadow: "none" }} as="h3">
           {" "}
           <h3>
-          <Card.Description style={{ boxShadow: "none" }}>
-            {" "}
-            {data?.Plot}{" "}
-          </Card.Description>
+            <Card.Description style={{ boxShadow: "none" }}>
+              {" "}
+              {data?.Plot}{" "}
+            </Card.Description>
           </h3>
         </Tab.Pane>
       ),
@@ -89,15 +90,16 @@ function ReviewCard(props) {
         data.map((data) => {
           return (
             <Grid.Row>
-              <Grid.Column computer={3} mobile={8} size="medium">
-                <Label attached="top" centered size="big" color="white">
+              <Grid.Column computer={3} mobile={8} style={{margin:'auto'}}>
+                {/* <Label attached="top" centered size="big" color="white"> */}
+                <Label as='a' color={data?.Type.toUpperCase()==='MOVIE'?'blue':'red' } ribbon>
                   {" "}
                   {data?.Type.toUpperCase()}
                 </Label>
                 {data?.Poster === "N/A" ? (
-                  <Image src="https://react.semantic-ui.com/images/wireframe/image.png" />
+                  <Image src="https://react.semantic-ui.com/images/wireframe/image.png" rounded />
                 ) : (
-                  <Image src={data?.Poster} size="medium" centered />
+                  <Image src={data?.Poster} size="medium" centered rounded />
                 )}
               </Grid.Column>
               <Grid.Column
@@ -196,15 +198,17 @@ function ReviewCard(props) {
                         </Header.Subheader>
                       </Header.Content>
                     </Header>
-                    <Button
-                      floated="right"
-                      onClick={() => open(data.id)}
-                      negative
-                    >
-                      Delete review <Icon name="trash" size="small" />
-                    </Button>
+                    {props.readOnly ? null : (
+                      <Button
+                        floated="right"
+                        onClick={() => open(data.id)}
+                        negative
+                      >
+                        Delete review
+                        <Icon name="trash" size="small" />
+                      </Button>
+                    )}
                   </Card.Content>
-
                   {/* <Button onClick={open} negative>
                       <Icon name="trash" size="big" />
                     </Button> */}

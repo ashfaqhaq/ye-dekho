@@ -8,9 +8,12 @@ import { Card } from "semantic-ui-react";
 import Skeleton from "./Skeleton";
 import Search from "./SearchBar";
 import ReviewCard from "./ReviewCard";
+import ShareLink from './ShareLink';
+
 
 function Dashboard() {
   const { currentUser } = useAuth();
+
 
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -60,6 +63,8 @@ function Dashboard() {
   return (
     <>
       <Search />
+      <ShareLink />
+      
       {isLoading ? <Skeleton /> : null}
       <br />
       <Card.Group>
