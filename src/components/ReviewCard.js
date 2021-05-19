@@ -1,18 +1,21 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-// import { Button,  Input, Grid, Image, Icon } from 'semantic-ui-react';
-import { db } from "../firebase/firebase";
-import { useAuth } from "../context/AuthContext";
 import { Card, Icon, Header } from "semantic-ui-react";
 import Rating from "@material-ui/lab/Rating";
 import {
-  Grid,
-  Image,
-  Label,
-  Dimmer,
-  Confirm,
-  Button,
-  Tab,
-} from "semantic-ui-react";
+    Grid,
+    Image,
+    Label,
+    Dimmer,
+    Confirm,
+    Button,
+    Tab,
+  } from "semantic-ui-react";
+
+import { db } from "../firebase/firebase";
+import { useAuth } from "../context/AuthContext";
+
+
 
 function ReviewCard(props) {
   const [data, setData] = useState(props.data);
@@ -37,11 +40,8 @@ function ReviewCard(props) {
     setData(
       copy.map((c) => (c.id === id ? { ...c, isSpoiler: !c.isSpoiler } : c))
     );
-
-    console.log(data);
   }
 
-  // eslint-disable-next-line no-unused-vars
   const handleShow = () => setIsSpoiler(true);
   const handleHide = () => setIsSpoiler(false);
 
@@ -68,7 +68,13 @@ function ReviewCard(props) {
     {
       menuItem: "Plot",
       render: () => (
-        <Tab.Pane style={{ boxShadow: "none" }} as="h3"> <Card.Description style={{ boxShadow: "none" }}>  {data?.Plot} </Card.Description></Tab.Pane>
+        <Tab.Pane style={{ boxShadow: "none" }} as="h3">
+          {" "}
+          <Card.Description style={{ boxShadow: "none" }}>
+            {" "}
+            {data?.Plot}{" "}
+          </Card.Description>
+        </Tab.Pane>
       ),
     },
   ];
@@ -152,9 +158,7 @@ function ReviewCard(props) {
                       menu={{ secondary: true, pointing: true }}
                       panes={panes(data)}
                     />
-                    <Card.Description>
-                     
-                    </Card.Description>
+                    <Card.Description></Card.Description>
                   </Card.Content>
                   <Card.Content extra>
                     Rating:{" "}
