@@ -17,6 +17,7 @@ import SearchBar from "../components/SearchBar";
 function Search() {
   const [data, setData] = useState();
   const [response, setResponse] = useState();
+  const [error, setError] = useState('');
 
   const parsed = queryString.parse(window.location.search);
   const search = parsed.search;
@@ -29,9 +30,18 @@ function Search() {
         if (json.Response === "True") {
           setData(json);
           setResponse(true);
+          
+        }
+        else{
+          setError('Not found');
+          setResponse(false);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setError('An error occured. Please refresh the page. or search with a other keywords');
+        setResponse(false);
+      });
   }, [search]);
 
   console.log(data);
@@ -108,7 +118,11 @@ function Search() {
           </Grid.Row>
         </Grid>
       ) : (
-        <Skeleton />
+        <>
+        {error===''? <Skeleton /> : <h3>{error}</h3> }
+       
+       
+        </>
       )}
     </div>
   );
