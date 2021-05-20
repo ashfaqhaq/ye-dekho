@@ -21,11 +21,11 @@ function Signup() {
             }
             
             else{
-                if(displayName){
+                if(displayName.trim()){
                     setIsLoading(true)
                 
                     const snapShot = await db.collection('users')
-                    .doc(displayName) 
+                    .doc(displayName.replace(/ +/g, "")) 
                     .get();
                     if(snapShot.exists){
                         alert("username is already taken");
@@ -34,7 +34,7 @@ function Signup() {
                     }
                     else{
                        
-                        await signup(email, password, displayName)
+                        await signup(email, password, displayName.replace(/ +/g, ""))
                         
                         history.push("/")
                     }
