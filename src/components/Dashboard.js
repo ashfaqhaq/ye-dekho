@@ -55,6 +55,7 @@ function Dashboard() {
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   }
   
@@ -66,6 +67,8 @@ function Dashboard() {
       <ShareLink />
       
       {isLoading ? <Skeleton /> : null}
+   
+      { !isLoading && !!reviews? <h1>You dont have any stuff added</h1> : null}
       <br />
       <Card.Group>
      
