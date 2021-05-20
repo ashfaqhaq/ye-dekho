@@ -52,7 +52,7 @@ function Search() {
         </Grid.Row>
       </Grid>
     </Form>
-    <h1> Search result for : {showInput} </h1>
+   {showInput && <h1> Search result for : {showInput} </h1>}
     </>
 
   );

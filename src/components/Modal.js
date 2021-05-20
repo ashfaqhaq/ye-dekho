@@ -94,6 +94,7 @@ function ModalComponent({ data }) {
                 }}
                 label="Review"
                 placeholder="Tell us.. ."
+                autoFocus
               />
               <Rating
                 name="hover-feedback"

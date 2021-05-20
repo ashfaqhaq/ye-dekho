@@ -67,8 +67,8 @@ function Dashboard() {
       <ShareLink />
       
       {isLoading ? <Skeleton /> : null}
-   
-      { !isLoading && !!reviews? <h1>You dont have any stuff added</h1> : null}
+
+      { !isLoading && reviews.length<1? <h1>You haven't reviewd any title yet!</h1> : null}
       <br />
       <Card.Group>
      

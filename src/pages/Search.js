@@ -44,7 +44,7 @@ function Search() {
       });
   }, [search]);
 
-  console.log(data);
+  
 
   return (
     <div>
