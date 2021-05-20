@@ -7,6 +7,7 @@ import { useHistory } from "react-router";
 
 function Search() {
   const [searchInput, setSearchInput] = useState("");
+  const [showInput, setShowInput] = useState("");
 
   // const [type, setType] = useState("")
   const history = useHistory();
@@ -21,10 +22,11 @@ function Search() {
       search: `?search=${searchInput}`,
       // &type=${type}
     });
-
+    setShowInput(searchInput)
     setSearchInput("");
   }
   return (
+    <>
     <Form onSubmit={searchMovie}>
       <Grid columns="equal">
         <Grid.Row style={{ marginTop: "1rem" }}>
@@ -32,6 +34,7 @@ function Search() {
            
           <Input
           centered
+          autoFocus 
             fluid
             icon="search"
             placeholder="Search..."
@@ -43,12 +46,15 @@ function Search() {
         </Grid.Column>
         <Grid.Column columns={10}>
           <Button type="submit" color="teal">
-            Submit
+            Search
           </Button>
           </Grid.Column>
         </Grid.Row>
       </Grid>
     </Form>
+    <h1> Search result for : {showInput} </h1>
+    </>
+
   );
 }
 
