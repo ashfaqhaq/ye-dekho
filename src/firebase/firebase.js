@@ -3,15 +3,15 @@ import 'firebase/firestore'
 import 'firebase/auth';
 import 'firebase/storage';
 
-const  firebaseConfig = {
-  apiKey: "AIzaSyAUb3J9hW0H0NMZvF9PY_H-M_7po1eUAoE",
-  authDomain: "reviews-a04e5.firebaseapp.com",
-  projectId: "reviews-a04e5",
-  storageBucket: "reviews-a04e5.appspot.com",
-  messagingSenderId: "311066678590",
-  appId: "1:311066678590:web:ab9eb2caf713db7089486f",
-  measurementId: "G-BPTD7M7HMN"
-};
+const  firebaseConfig =  {
+    apiKey: "AIzaSyBZbwNv37LSd46huxS_7zSu4fqrXkBWvMo",
+    authDomain: "ye-dekho.firebaseapp.com",
+    projectId: "ye-dekho",
+    storageBucket: "ye-dekho.appspot.com",
+    messagingSenderId: "620450958157",
+    appId: "1:620450958157:web:8b8daf3a1c984aca6c8504",
+    measurementId: "G-KRBVDWTK2Q"
+  };
 
 if (!firebase.apps.length) {
   var firebaseApp =  firebase.initializeApp(firebaseConfig)
